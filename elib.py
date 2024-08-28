@@ -6,11 +6,12 @@
 
 
 # Demand and Supply functions
-def quantity_demanded(price, income):
-    return 100 - 2 * price + 0.5 * income
+def quantity_demanded(price, income, price_elasticity=1.0):
+    return 100 - price_elasticity * (2 * price) + 0.5 * income
 
-def quantity_supplied(price, production_cost):
-    return 3 * price - 0.5 * production_cost
+def quantity_supplied(price, production_cost, price_elasticity=1.0):
+    return price_elasticity * (3 * price) - 0.5 * production_cost
+
 
 # Finding the equilibrium
 # Market Equilibrium occurs when the quantity demanded by consumers equals the quantity supplied by producers.
@@ -25,10 +26,25 @@ def find_equilibrium(income, production_cost):
         if Qd == Qs:
             return price, Qd  # Equilibrium price and quantity
 
+def simulate_market(income, production_cost, periods=10):
+    price = 20  # Start with an initial price
+    for period in range(periods):
+        Qd = quantity_demanded(price, income)
+        Qs = quantity_supplied(price, production_cost)
+        # Adjust the price based on excess demand or supply
+        if Qd > Qs:
+            price += 1  # Increase price if demand exceeds supply
+        elif Qd < Qs:
+            price -= 1  # Decrease price if supply exceeds demand
+        print(f"Period {period + 1}: Price = {price}, Quantity = {min(Qd, Qs)}")
+
 # Calculate the equilibrium
 equilibrium_price, equilibrium_quantity = find_equilibrium(income=50, production_cost=20)
 
 # Display the results
 print(f"Equilibrium Price: {equilibrium_price}")
 print(f"Equilibrium Quantity: {equilibrium_quantity}")
+print("*"*50)
+print("Simulating market...")
+simulate_market(income=50, production_cost=20, periods=10)
 
