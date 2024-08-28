@@ -1,3 +1,5 @@
+from plotting import plot_market_simulation
+
 # Demand: The quantity of a good or service that consumers are willing to buy at various prices.
 # Supply: The quantity of a good or service that producers are willing to sell at various prices.
 # Law of Demand: As price decreases, quantity demanded increases (and vice versa).
@@ -28,23 +30,29 @@ def find_equilibrium(income, production_cost):
 
 def simulate_market(income, production_cost, periods=10):
     price = 20  # Start with an initial price
+    price_history = []
+    quantity_history = []
+    
     for period in range(periods):
         Qd = quantity_demanded(price, income)
         Qs = quantity_supplied(price, production_cost)
+        
+        # Store the current price and the lesser of Qd or Qs (quantity exchanged)
+        price_history.append(price)
+        quantity_history.append(min(Qd, Qs))
+        
         # Adjust the price based on excess demand or supply
         if Qd > Qs:
             price += 1  # Increase price if demand exceeds supply
         elif Qd < Qs:
             price -= 1  # Decrease price if supply exceeds demand
+        
         print(f"Period {period + 1}: Price = {price}, Quantity = {min(Qd, Qs)}")
+    
+    return price_history, quantity_history
 
-# Calculate the equilibrium
-equilibrium_price, equilibrium_quantity = find_equilibrium(income=50, production_cost=20)
+# Simulate the market and get the data
+price_history, quantity_history = simulate_market(income=50, production_cost=20, periods=15)
 
-# Display the results
-print(f"Equilibrium Price: {equilibrium_price}")
-print(f"Equilibrium Quantity: {equilibrium_quantity}")
-print("*"*50)
-print("Simulating market...")
-simulate_market(income=50, production_cost=20, periods=10)
-
+# Plot the price history
+plot_market_simulation(price_history, quantity_history)
