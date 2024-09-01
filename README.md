@@ -1,5 +1,3 @@
-Certainly! Below is a markdown document that summarizes what we have covered in this chat, what the application does, and how it relates to microeconomics.
-
 # Microeconomics Market Simulation App
 
 ## Overview
